@@ -1319,11 +1319,24 @@ mod tests {
         #[async_trait]
         impl ReceiptStore for Contended {
             async fn append(&self, receipt: ExecutionReceipt) -> Result<(), ReedeError> {
-                if self
-                    .conflicts
-                    .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |n| n.checked_sub(1))
-                    .is_ok()
-                {
+                // compare_exchange, not fetch_update: newer stable deprecates fetch_update
+                // (renamed try_update), which does not exist on the 1.89 MSRV.
+                let mut left = self.conflicts.load(Ordering::SeqCst);
+                let lost = loop {
+                    let Some(next) = left.checked_sub(1) else {
+                        break false;
+                    };
+                    match self.conflicts.compare_exchange(
+                        left,
+                        next,
+                        Ordering::SeqCst,
+                        Ordering::SeqCst,
+                    ) {
+                        Ok(_) => break true,
+                        Err(actual) => left = actual,
+                    }
+                };
+                if lost {
                     return Err(ReedeError::ReceiptHeadConflict {
                         reason: "lost the race".to_string(),
                     });
