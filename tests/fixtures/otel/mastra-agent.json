@@ -1,0 +1,1472 @@
+[
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "generic"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "generic"
+     }
+    },
+    {
+     "key": "mastra.generic.output",
+     "value": {
+      "stringValue": "{\"toolCount\":1}"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863083000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "generic demo",
+   "parentSpanId": "748f168e9bf61ec2",
+   "spanId": "209e2c65859fac0a",
+   "startTimeUnixNano": "1795257863074000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "processor_run"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "processor_run"
+     }
+    },
+    {
+     "key": "mastra.processor_run.input",
+     "value": {
+      "stringValue": "{\"prompt\":[{\"role\":\"system\",\"content\":\"Use lookup, then answer briefly.\"},{\"role\":\"user\",\"content\":[{\"type\":\"text\",\"text\":\"What does a reported receipt prove?\",\"providerOptions\":{\"mastra\":{\"createdAt\":1795257863076}}}]}],\"stepNumber\":0,\"retryCount\":0}"
+     }
+    },
+    {
+     "key": "mastra.processor_run.output",
+     "value": {
+      "stringValue": "{\"shortCircuited\":false}"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863124000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "processor_run Provider History Compat",
+   "parentSpanId": "e324d2cee6acb533",
+   "spanId": "bddc3823666805d6",
+   "startTimeUnixNano": "1795257863123000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "processor_run"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "processor_run"
+     }
+    },
+    {
+     "key": "mastra.processor_run.input",
+     "value": {
+      "stringValue": "{\"prompt\":[{\"role\":\"system\",\"content\":\"Use lookup, then answer briefly.\"},{\"role\":\"user\",\"content\":[{\"type\":\"text\",\"text\":\"What does a reported receipt prove?\",\"providerOptions\":{\"mastra\":{\"createdAt\":1795257863076}}}]}],\"stepNumber\":0,\"retryCount\":0}"
+     }
+    },
+    {
+     "key": "mastra.processor_run.output",
+     "value": {
+      "stringValue": "{\"shortCircuited\":false}"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863124000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "processor_run Unsupported File Handler",
+   "parentSpanId": "e324d2cee6acb533",
+   "spanId": "b647fe0f796ff54a",
+   "startTimeUnixNano": "1795257863124000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "model_chunk"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "model_chunk"
+     }
+    },
+    {
+     "key": "mastra.model_chunk.output",
+     "value": {
+      "stringValue": "{\"toolName\":\"lookup\",\"toolCallId\":\"call_1\",\"toolInput\":{\"topic\":\"receipts\"}}"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863151000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "model_chunk demo",
+   "parentSpanId": "e324d2cee6acb533",
+   "spanId": "d4fc4e22c9304fef",
+   "startTimeUnixNano": "1795257863143000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "execute_tool"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "tool_call"
+     }
+    },
+    {
+     "key": "gen_ai.tool.call.arguments",
+     "value": {
+      "stringValue": "{\"topic\":\"receipts\"}"
+     }
+    },
+    {
+     "key": "gen_ai.tool.call.result",
+     "value": {
+      "stringValue": "{\"fact\":\"receipts: sealed by the machine that received them\"}"
+     }
+    },
+    {
+     "key": "gen_ai.tool.name",
+     "value": {
+      "stringValue": "lookup"
+     }
+    },
+    {
+     "key": "gen_ai.tool.call.id",
+     "value": {
+      "stringValue": "call_1"
+     }
+    },
+    {
+     "key": "gen_ai.tool.description",
+     "value": {
+      "stringValue": "Look a topic up."
+     }
+    },
+    {
+     "key": "gen_ai.tool.type",
+     "value": {
+      "stringValue": "tool"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863161000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "execute_tool lookup",
+   "parentSpanId": "e324d2cee6acb533",
+   "spanId": "175cc18500abc4cb",
+   "startTimeUnixNano": "1795257863160000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "model_chunk"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "model_chunk"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    },
+    {
+     "key": "mastra.metadata.toolCallId",
+     "value": {
+      "stringValue": "call_1"
+     }
+    },
+    {
+     "key": "mastra.metadata.toolName",
+     "value": {
+      "stringValue": "lookup"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863162000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "model_chunk demo",
+   "parentSpanId": "e324d2cee6acb533",
+   "spanId": "aab535e9147b0ac2",
+   "startTimeUnixNano": "1795257863162000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "chat"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "model_inference"
+     }
+    },
+    {
+     "key": "gen_ai.input.messages",
+     "value": {
+      "stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"Use lookup, then answer briefly.\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"What does a reported receipt prove?\"}]}]"
+     }
+    },
+    {
+     "key": "gen_ai.output.messages",
+     "value": {
+      "stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"tool_call\",\"id\":\"call_1\",\"name\":\"lookup\",\"arguments\":\"{\\\"topic\\\":\\\"receipts\\\"}\"}],\"finish_reason\":\"tool_call\"}]"
+     }
+    },
+    {
+     "key": "gen_ai.request.model",
+     "value": {
+      "stringValue": "mock-model-id"
+     }
+    },
+    {
+     "key": "gen_ai.provider.name",
+     "value": {
+      "stringValue": "mock-provider"
+     }
+    },
+    {
+     "key": "gen_ai.usage.input_tokens",
+     "value": {
+      "intValue": "30"
+     }
+    },
+    {
+     "key": "gen_ai.usage.output_tokens",
+     "value": {
+      "intValue": "10"
+     }
+    },
+    {
+     "key": "gen_ai.agent.id",
+     "value": {
+      "stringValue": "demo"
+     }
+    },
+    {
+     "key": "gen_ai.agent.name",
+     "value": {
+      "stringValue": "demo"
+     }
+    },
+    {
+     "key": "mastra.completion_start_time",
+     "value": {
+      "stringValue": "2026-11-21T10:44:23.142Z"
+     }
+    },
+    {
+     "key": "gen_ai.response.finish_reasons",
+     "value": {
+      "arrayValue": {
+       "values": [
+        {
+         "stringValue": "tool-calls"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863152000000",
+   "events": [],
+   "kind": 3,
+   "links": [],
+   "name": "chat mock-model-id",
+   "parentSpanId": "e324d2cee6acb533",
+   "spanId": "812f441344284cc7",
+   "startTimeUnixNano": "1795257863125000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "agent_step"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "model_step"
+     }
+    },
+    {
+     "key": "mastra.model_step.input",
+     "value": {
+      "stringValue": "[{\"role\":\"system\",\"content\":\"Use lookup, then answer briefly.\"},{\"role\":\"user\",\"content\":\"What does a reported receipt prove?\"}]"
+     }
+    },
+    {
+     "key": "mastra.model_step.output",
+     "value": {
+      "stringValue": "{\"text\":\"\",\"toolCalls\":[{\"toolCallId\":\"call_1\",\"toolName\":\"lookup\",\"args\":{\"topic\":\"receipts\"}}]}"
+     }
+    },
+    {
+     "key": "mastra.model_step.step_index",
+     "value": {
+      "intValue": "0"
+     }
+    },
+    {
+     "key": "mastra.model_step.is_continued",
+     "value": {
+      "boolValue": true
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    },
+    {
+     "key": "mastra.metadata.modelMetadata",
+     "value": {
+      "stringValue": "{\"modelId\":\"mock-model-id\",\"modelVersion\":\"v3\",\"modelProvider\":\"mock-provider\"}"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863169000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "agent_step demo",
+   "parentSpanId": "154afff79963bc71",
+   "spanId": "e324d2cee6acb533",
+   "startTimeUnixNano": "1795257863115000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "processor_run"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "processor_run"
+     }
+    },
+    {
+     "key": "mastra.processor_run.input",
+     "value": {
+      "stringValue": "{\"prompt\":[{\"role\":\"system\",\"content\":\"Use lookup, then answer briefly.\"},{\"role\":\"user\",\"content\":[{\"type\":\"text\",\"text\":\"What does a reported receipt prove?\",\"providerOptions\":{\"mastra\":{\"createdAt\":1795257863076}}}]},{\"role\":\"assistant\",\"content\":[{\"type\":\"tool-call\",\"toolCallId\":\"call_1\",\"toolName\":\"lookup\",\"input\":{\"topic\":\"receipts\"}}]},{\"role\":\"tool\",\"content\":[{\"type\":\"tool-result\",\"toolCallId\":\"call_1\",\"toolName\":\"lookup\",\"output\":{\"type\":\"json\",\"value\":{\"fact\":\"receipts: sealed by the machine that received them\"}},\"input\":{\"topic\":\"receipts\"}}]}],\"stepNumber\":1,\"retryCount\":0}"
+     }
+    },
+    {
+     "key": "mastra.processor_run.output",
+     "value": {
+      "stringValue": "{\"shortCircuited\":false}"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863175000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "processor_run Provider History Compat",
+   "parentSpanId": "4fffc18249e172b4",
+   "spanId": "048b831aa5fa99cd",
+   "startTimeUnixNano": "1795257863175000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "processor_run"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "processor_run"
+     }
+    },
+    {
+     "key": "mastra.processor_run.input",
+     "value": {
+      "stringValue": "{\"prompt\":[{\"role\":\"system\",\"content\":\"Use lookup, then answer briefly.\"},{\"role\":\"user\",\"content\":[{\"type\":\"text\",\"text\":\"What does a reported receipt prove?\",\"providerOptions\":{\"mastra\":{\"createdAt\":1795257863076}}}]},{\"role\":\"assistant\",\"content\":[{\"type\":\"tool-call\",\"toolCallId\":\"call_1\",\"toolName\":\"lookup\",\"input\":{\"topic\":\"receipts\"}}]},{\"role\":\"tool\",\"content\":[{\"type\":\"tool-result\",\"toolCallId\":\"call_1\",\"toolName\":\"lookup\",\"output\":{\"type\":\"json\",\"value\":{\"fact\":\"receipts: sealed by the machine that received them\"}},\"input\":{\"topic\":\"receipts\"}}]}],\"stepNumber\":1,\"retryCount\":0}"
+     }
+    },
+    {
+     "key": "mastra.processor_run.output",
+     "value": {
+      "stringValue": "{\"shortCircuited\":false}"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863176000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "processor_run Unsupported File Handler",
+   "parentSpanId": "4fffc18249e172b4",
+   "spanId": "78b5630fb8efea84",
+   "startTimeUnixNano": "1795257863175000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "model_chunk"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "model_chunk"
+     }
+    },
+    {
+     "key": "mastra.model_chunk.output",
+     "value": {
+      "stringValue": "{\"text\":\"a reported receipt proves what was reported\"}"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863177000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "model_chunk demo",
+   "parentSpanId": "4fffc18249e172b4",
+   "spanId": "dbf833508a079cef",
+   "startTimeUnixNano": "1795257863177000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "chat"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "model_inference"
+     }
+    },
+    {
+     "key": "gen_ai.input.messages",
+     "value": {
+      "stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"Use lookup, then answer briefly.\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"What does a reported receipt prove?\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"[tool: lookup]\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"text\",\"content\":\"[tool-result: lookup]\"}]}]"
+     }
+    },
+    {
+     "key": "gen_ai.output.messages",
+     "value": {
+      "stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"a reported receipt proves what was reported\"}],\"finish_reason\":\"stop\"}]"
+     }
+    },
+    {
+     "key": "gen_ai.request.model",
+     "value": {
+      "stringValue": "mock-model-id"
+     }
+    },
+    {
+     "key": "gen_ai.provider.name",
+     "value": {
+      "stringValue": "mock-provider"
+     }
+    },
+    {
+     "key": "gen_ai.usage.input_tokens",
+     "value": {
+      "intValue": "50"
+     }
+    },
+    {
+     "key": "gen_ai.usage.output_tokens",
+     "value": {
+      "intValue": "9"
+     }
+    },
+    {
+     "key": "gen_ai.agent.id",
+     "value": {
+      "stringValue": "demo"
+     }
+    },
+    {
+     "key": "gen_ai.agent.name",
+     "value": {
+      "stringValue": "demo"
+     }
+    },
+    {
+     "key": "mastra.completion_start_time",
+     "value": {
+      "stringValue": "2026-11-21T10:44:23.177Z"
+     }
+    },
+    {
+     "key": "gen_ai.response.finish_reasons",
+     "value": {
+      "arrayValue": {
+       "values": [
+        {
+         "stringValue": "stop"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863177000000",
+   "events": [],
+   "kind": 3,
+   "links": [],
+   "name": "chat mock-model-id",
+   "parentSpanId": "4fffc18249e172b4",
+   "spanId": "1f4cb284fb284be5",
+   "startTimeUnixNano": "1795257863176000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "agent_step"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "model_step"
+     }
+    },
+    {
+     "key": "mastra.model_step.input",
+     "value": {
+      "stringValue": "[{\"role\":\"system\",\"content\":\"Use lookup, then answer briefly.\"},{\"role\":\"user\",\"content\":\"What does a reported receipt prove?\"},{\"role\":\"assistant\",\"content\":\"[tool: lookup]\"},{\"role\":\"tool\",\"content\":\"[tool-result: lookup]\"}]"
+     }
+    },
+    {
+     "key": "mastra.model_step.output",
+     "value": {
+      "stringValue": "{\"text\":\"a reported receipt proves what was reported\",\"toolCalls\":[]}"
+     }
+    },
+    {
+     "key": "mastra.model_step.step_index",
+     "value": {
+      "intValue": "1"
+     }
+    },
+    {
+     "key": "mastra.model_step.is_continued",
+     "value": {
+      "boolValue": false
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    },
+    {
+     "key": "mastra.metadata.modelMetadata",
+     "value": {
+      "stringValue": "{\"modelId\":\"mock-model-id\",\"modelVersion\":\"v3\",\"modelProvider\":\"mock-provider\"}"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863180000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "agent_step demo",
+   "parentSpanId": "154afff79963bc71",
+   "spanId": "4fffc18249e172b4",
+   "startTimeUnixNano": "1795257863173000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "model_generation"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "model_generation"
+     }
+    },
+    {
+     "key": "mastra.model_generation.input",
+     "value": {
+      "stringValue": "{\"messages\":[{\"role\":\"system\",\"content\":\"Use lookup, then answer briefly.\"},{\"role\":\"user\",\"content\":[{\"type\":\"text\",\"text\":\"What does a reported receipt prove?\",\"providerOptions\":{\"mastra\":{\"createdAt\":1795257863076}}}]}]}"
+     }
+    },
+    {
+     "key": "mastra.model_generation.output",
+     "value": {
+      "stringValue": "{\"files\":[],\"reasoning\":[],\"sources\":[],\"text\":\"a reported receipt proves what was reported\",\"warnings\":[],\"toolCalls\":[{\"toolCallId\":\"call_1\",\"toolName\":\"lookup\",\"args\":{\"topic\":\"receipts\"}}]}"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863183000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "model_generation mock-model-id",
+   "parentSpanId": "748f168e9bf61ec2",
+   "spanId": "154afff79963bc71",
+   "startTimeUnixNano": "1795257863093000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "invoke_agent"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "agent_run"
+     }
+    },
+    {
+     "key": "mastra.agent_run.input",
+     "value": {
+      "stringValue": "What does a reported receipt prove?"
+     }
+    },
+    {
+     "key": "mastra.agent_run.output",
+     "value": {
+      "stringValue": "{\"text\":\"a reported receipt proves what was reported\",\"files\":[]}"
+     }
+    },
+    {
+     "key": "gen_ai.agent.id",
+     "value": {
+      "stringValue": "demo"
+     }
+    },
+    {
+     "key": "gen_ai.agent.name",
+     "value": {
+      "stringValue": "demo"
+     }
+    },
+    {
+     "key": "gen_ai.provider.name",
+     "value": {
+      "stringValue": "mock-provider"
+     }
+    },
+    {
+     "key": "gen_ai.tool.definitions",
+     "value": {
+      "stringValue": "[{\"type\":\"function\",\"name\":\"lookup\"}]"
+     }
+    },
+    {
+     "key": "gen_ai.system_instructions",
+     "value": {
+      "stringValue": "[{\"type\":\"text\",\"content\":\"Use lookup, then answer briefly.\"}]"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "ec64cb04-9acc-467b-a4c1-7eecd253462c"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863283000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "invoke_agent demo",
+   "parentSpanId": "",
+   "spanId": "748f168e9bf61ec2",
+   "startTimeUnixNano": "1795257863056000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "51d9bb64af4dff0394e95f9a0d4a5973",
+   "traceState": ""
+  }
+ }
+]

@@ -12,7 +12,7 @@ mkdir -p "$work"
 # Install into a scratch copy so the example directory stays free of node_modules.
 if [ ! -d "$work/app/node_modules" ]; then
   mkdir -p "$work/app"
-  cp "$here/package.json" "$here/package-lock.json" "$here/agent.js" "$work/app/"
+  cp "$here/package.json" "$here/package-lock.json" "$here"/*.js "$work/app/"
   (cd "$work/app" && npm ci --silent)
 fi
 
@@ -25,7 +25,7 @@ for _ in $(seq 1 50); do
   sleep 0.1
 done
 
-(cd "$work/app" && node agent.js)
+(cd "$work/app" && node "${AGENT:-agent.js}")
 sleep 1
 
 cat "$work/serve.log"

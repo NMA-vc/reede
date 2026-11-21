@@ -400,10 +400,52 @@ async fn ingest_cli(_args: &[String]) -> i32 {
     1
 }
 
-/// `serve` and `ingest check`. Reported-tier wording is deliberate: see docs/ingest.md.
+#[cfg(feature = "ingest")]
+const INGEST_USAGE: &str = "Usage:
+  reede serve [--listen 127.0.0.1:4318] [--out <dir>] [--tenant local] [--allow-remote]
+  reede ingest check --out <dir> [--pubkey <hex>]
+  reede ingest runs --out <dir> [--trace <id>]";
+
+/// Reject help and unknown flags BEFORE anything is created: `Ok(Some(code))` means print usage
+/// and exit with `code` (0 for -h/--help, 2 for an unknown flag or stray argument).
+#[cfg(feature = "ingest")]
+fn ingest_args_verdict(args: &[String]) -> Option<i32> {
+    let (valued, rest): (&[&str], &[String]) =
+        match (args[1].as_str(), args.get(2).map(String::as_str)) {
+            ("serve", _) => (&["--listen", "--out", "--tenant"], &args[2..]),
+            ("ingest", Some("check")) => (&["--out", "--pubkey"], &args[3..]),
+            ("ingest", Some("runs")) => (&["--out", "--trace"], &args[3..]),
+            ("ingest", Some("-h" | "--help")) => return Some(0),
+            _ => return Some(2),
+        };
+    let mut it = rest.iter();
+    while let Some(a) = it.next() {
+        match a.as_str() {
+            "-h" | "--help" => return Some(0),
+            "--allow-remote" if args[1] == "serve" => {}
+            f if valued.contains(&f) => {
+                if it.next().is_none() {
+                    return Some(2);
+                }
+            }
+            _ => return Some(2),
+        }
+    }
+    None
+}
+
+/// `serve` and `ingest check|runs`. Reported-tier wording is deliberate: see docs/ingest.md.
 #[cfg(feature = "ingest")]
 async fn ingest_cli(args: &[String]) -> i32 {
     use reede::ingest;
+    if let Some(code) = ingest_args_verdict(args) {
+        if code == 0 {
+            println!("{INGEST_USAGE}");
+        } else {
+            eprintln!("{INGEST_USAGE}");
+        }
+        return code;
+    }
     let flag = |name: &str| {
         args.iter()
             .position(|a| a == name)
@@ -412,8 +454,32 @@ async fn ingest_cli(args: &[String]) -> i32 {
     };
     let out = std::path::PathBuf::from(flag("--out").unwrap_or_else(|| "reede-ingest".into()));
     if args[1] == "ingest" {
+        if args.get(2).map(String::as_str) == Some("runs") && flag("--out").is_some() {
+            let report = ingest::read_span_values(&out).map(|items| {
+                let mut r = ingest::runs::map_runs(&items, &ingest::runs::Prices::default());
+                if let Some(t) = flag("--trace") {
+                    r.traces.retain(|x| x.trace_id == t);
+                }
+                r
+            });
+            return match report {
+                Ok(r) => {
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&ingest::runs::to_json(&r))
+                            .unwrap_or_default()
+                    );
+                    0
+                }
+                Err(e) => {
+                    eprintln!("FAIL: {e}");
+                    1
+                }
+            };
+        }
         if args.get(2).map(String::as_str) != Some("check") || flag("--out").is_none() {
             eprintln!("Usage: reede ingest check --out <dir> [--pubkey <hex>]");
+            eprintln!("       reede ingest runs --out <dir> [--trace <id>]");
             return 1;
         }
         return match ingest::check(&out, flag("--pubkey").as_deref()) {

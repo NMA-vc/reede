@@ -66,6 +66,8 @@ Usage:
                                               verify a hosted BYOA proof: chain slice, Merkle inclusion, RFC 3161 anchor
   reede serve [--listen 127.0.0.1:4318] [--out <dir>] [--tenant local] [--allow-remote]
                                               seal OTLP spans into receipts (reported tier; needs --features ingest)
+  reede ingest runs --out <dir> [--trace <id>]
+                                              print the spans as one run tree per trace, JSON (needs --features ingest)
   reede ingest check --out <dir> [--pubkey <hex>]
                                               verify the chain and every span against its receipt (needs --features ingest)
   reede status                                  probe the local runtime environment

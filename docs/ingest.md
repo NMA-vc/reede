@@ -112,4 +112,27 @@ high-volume ingest.
 `examples/otel/langgraph` (LangSmith's OTel integration) and `examples/otel/mastra`
 (`@mastra/otel-exporter`), each with a `run.sh`, run against fake models. Both emit `gen_ai.*`
 attributes; only the model-call span carries token usage, so token counts are not duplicated
-across a trace.
+across a trace. `examples/otel/deepagents` (a Deep Agents agent with one subagent) and
+`examples/otel/mastra/agent-tools.js` (a tool call plus a workflow; `AGENT=agent-tools.js
+./run.sh`) are the inputs of the run mapping below.
+
+## Runs
+
+`reede ingest runs --out <dir> [--trace <id>]` prints the stored spans as one run tree per trace
+(JSON; `src/ingest/runs.rs`, a pure function the hosted `GET /api/v1/reede/byoa/runs` reuses).
+A node is a `run`, `step`, `model` call or `tool` call; its `attributes` keep every attribute
+the mapping did not read, verbatim. Spans that are none of these (middleware wrappers, stream
+chunks, processors) are folded into the nearest kept ancestor under `internal`, not dropped.
+
+| Framework | Detected by | run | step | model | tool |
+|---|---|---|---|---|---|
+| Deep Agents / LangGraph (LangSmith OTel) | `langsmith.span.kind` | trace root; a chain span named after its `lc_agent_name` (a subagent, under its `task` tool call) | a graph node (`langgraph_node`) directly under a run | `llm` | `tool` |
+| Mastra (`@mastra/otel-exporter`) | `mastra.span.type` | `agent_run`, `workflow_run` | `workflow_step`, `model_generation`, `model_step` | `model_inference` | `tool_call` |
+| Any other GenAI | `gen_ai.operation.name` | `invoke_agent`, `create_agent`, `invoke_workflow` | none | `chat`, `text_completion`, `generate_content`, `embeddings` | `execute_tool` |
+
+Hierarchy follows `parentSpanId`. A span whose parent never arrived is shown as a run of its own
+and listed under `problems`, as are values that are not stored spans, repeated span ids and
+parent cycles. Tokens are summed from model calls only (a parent's own count would double them),
+per node over its whole subtree. `cost_eur` is a `gen_ai.usage.cost_eur` / `reede.cost_eur`
+attribute on a model call, else a host-supplied price (EUR per million tokens) for its model,
+else `null`.

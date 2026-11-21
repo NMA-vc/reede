@@ -14,6 +14,7 @@
 
 mod http;
 pub mod otlp;
+pub mod runs;
 mod seal;
 
 pub use http::Server;
@@ -86,6 +87,35 @@ fn create_private_dir(dir: &Path) -> Result<(), String> {
     std::os::unix::fs::DirBuilderExt::mode(&mut b, 0o700);
     b.create(dir)
         .map_err(|e| format!("create {}: {e}", dir.display()))
+}
+
+/// Every stored span under `<dir>/spans`, as `(file name, JSON)` in sequence order. A file that
+/// is not JSON is returned as a JSON string of its error so `runs::map_runs` reports it.
+pub fn read_span_values(dir: &Path) -> Result<Vec<(String, Value)>, String> {
+    let entries = fs::read_dir(dir.join("spans")).map_err(|e| format!("spans dir: {e}"))?;
+    let mut files: Vec<(usize, PathBuf)> = entries
+        .flatten()
+        .filter_map(|e| {
+            let n = e
+                .file_name()
+                .to_string_lossy()
+                .strip_suffix(".json")?
+                .parse()
+                .ok()?;
+            Some((n, e.path()))
+        })
+        .collect();
+    files.sort();
+    Ok(files
+        .into_iter()
+        .map(|(n, p)| {
+            let v = fs::read_to_string(&p)
+                .map_err(|e| e.to_string())
+                .and_then(|t| serde_json::from_str(&t).map_err(|e| e.to_string()))
+                .unwrap_or_else(Value::String);
+            (format!("spans/{n}.json"), v)
+        })
+        .collect())
 }
 
 /// The highest `spans/<n>.json` sequence number present (0 when none).

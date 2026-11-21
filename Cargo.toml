@@ -67,3 +67,7 @@ required-features = ["sdk-conformance"]
 [[test]]
 name = "ingest_serve"
 required-features = ["ingest"]
+
+[[test]]
+name = "ingest_runs"
+required-features = ["ingest"]

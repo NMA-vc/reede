@@ -1,0 +1,296 @@
+[
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "workflow_step"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "workflow_step"
+     }
+    },
+    {
+     "key": "mastra.workflow_step.input",
+     "value": {
+      "stringValue": "{\"text\":\"sealed\"}"
+     }
+    },
+    {
+     "key": "mastra.workflow_step.output",
+     "value": {
+      "stringValue": "{\"text\":\"SEALED\"}"
+     }
+    },
+    {
+     "key": "mastra.workflow_step.step_id",
+     "value": {
+      "stringValue": "shout"
+     }
+    },
+    {
+     "key": "mastra.workflow_step.status",
+     "value": {
+      "stringValue": "success"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "b81c8644-71db-4a51-b45e-f13007bb1b1a"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863293000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "workflow_step shout",
+   "parentSpanId": "ab5c26d972afd3f5",
+   "spanId": "2d359bbdb04a4ff6",
+   "startTimeUnixNano": "1795257863293000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "ea5fda54be103f0e584f4c4a2278ce26",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "workflow_step"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "workflow_step"
+     }
+    },
+    {
+     "key": "mastra.workflow_step.input",
+     "value": {
+      "stringValue": "{\"text\":\"SEALED\"}"
+     }
+    },
+    {
+     "key": "mastra.workflow_step.output",
+     "value": {
+      "stringValue": "{\"text\":\"SEALED!\"}"
+     }
+    },
+    {
+     "key": "mastra.workflow_step.step_id",
+     "value": {
+      "stringValue": "exclaim"
+     }
+    },
+    {
+     "key": "mastra.workflow_step.status",
+     "value": {
+      "stringValue": "success"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "b81c8644-71db-4a51-b45e-f13007bb1b1a"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863293000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "workflow_step exclaim",
+   "parentSpanId": "ab5c26d972afd3f5",
+   "spanId": "f4f912f52b538714",
+   "startTimeUnixNano": "1795257863293000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "ea5fda54be103f0e584f4c4a2278ce26",
+   "traceState": ""
+  }
+ },
+ {
+  "resource": [
+   {
+    "key": "service.name",
+    "value": {
+     "stringValue": "reede-mastra-tools-example"
+    }
+   },
+   {
+    "key": "service.version",
+    "value": {
+     "stringValue": "1.85.0"
+    }
+   },
+   {
+    "key": "telemetry.sdk.name",
+    "value": {
+     "stringValue": "@mastra/otel-exporter"
+    }
+   },
+   {
+    "key": "telemetry.sdk.version",
+    "value": {
+     "stringValue": "1.6.1"
+    }
+   },
+   {
+    "key": "telemetry.sdk.language",
+    "value": {
+     "stringValue": "nodejs"
+    }
+   }
+  ],
+  "scope": {
+   "name": "@mastra/otel-exporter",
+   "version": "1.6.1"
+  },
+  "span": {
+   "attributes": [
+    {
+     "key": "gen_ai.operation.name",
+     "value": {
+      "stringValue": "invoke_workflow"
+     }
+    },
+    {
+     "key": "mastra.span.type",
+     "value": {
+      "stringValue": "workflow_run"
+     }
+    },
+    {
+     "key": "mastra.workflow_run.input",
+     "value": {
+      "stringValue": "{\"text\":\"sealed\"}"
+     }
+    },
+    {
+     "key": "mastra.workflow_run.output",
+     "value": {
+      "stringValue": "{\"text\":\"SEALED!\"}"
+     }
+    },
+    {
+     "key": "gen_ai.workflow.name",
+     "value": {
+      "stringValue": "shouter"
+     }
+    },
+    {
+     "key": "mastra.workflow_run.status",
+     "value": {
+      "stringValue": "success"
+     }
+    },
+    {
+     "key": "mastra.metadata.runId",
+     "value": {
+      "stringValue": "b81c8644-71db-4a51-b45e-f13007bb1b1a"
+     }
+    }
+   ],
+   "endTimeUnixNano": "1795257863294000000",
+   "events": [],
+   "kind": 1,
+   "links": [],
+   "name": "invoke_workflow shouter",
+   "parentSpanId": "",
+   "spanId": "ab5c26d972afd3f5",
+   "startTimeUnixNano": "1795257863292000000",
+   "status": {
+    "code": 1,
+    "message": ""
+   },
+   "traceId": "ea5fda54be103f0e584f4c4a2278ce26",
+   "traceState": ""
+  }
+ }
+]
