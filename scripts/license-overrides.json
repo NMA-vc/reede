@@ -1,0 +1,11 @@
+[
+  {
+    "name": "valuable",
+    "version": "0.1.1",
+    "source": "registry+https://github.com/rust-lang/crates.io-index",
+    "git_commit": "9efc29b6e58cef28f6566a47aa7e142a55fead77",
+    "file": "docs/licenses/valuable-0.1.1-LICENSE",
+    "sha256": "ed60d479b8fd1f64e9cbc3de449a16a53ac1b3d1b6aeb9bf9d190a8e93061b44",
+    "upstream_url": "https://raw.githubusercontent.com/tokio-rs/valuable/9efc29b6e58cef28f6566a47aa7e142a55fead77/LICENSE"
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "_comment": "PENDING TEMPLATE: runtime TSA issuance is required; tsa_token is intentionally null.",
+  "expected_content_hash": "cd745b58dd1490836bb05329131b9bbd352340786334ea19383ca5b0a8c311bb",
+  "pubkey_hex": "197f6b23e16c8532c6abc838facd5ea789be0c76b2920334039bfa8b3d368d61",
+  "receipt": {
+    "content_hash": "cd745b58dd1490836bb05329131b9bbd352340786334ea19383ca5b0a8c311bb",
+    "credits_spent": 0,
+    "format": "reede-v1",
+    "payload_summary": "{\"version\":1,\"kind\":\"timestamp-proof\",\"status\":\"pending-runtime-issuance\",\"signer\":\"b600306cfa76723f\"}",
+    "prev_hash": null,
+    "reservation_credits": 0,
+    "sequence_no": 1,
+    "signature": "a85e8d583fdb14f87bc0e596fe5542840d9b65d520f740dc7bf669678b3c32cb978720e699d9fbd069f0ec2c4b3aa9dfa455db8e731d4610bf2058cbc6ebc307",
+    "task_id": "00000000-0000-0000-0000-000000000075",
+    "tenant_id": "vector-tenant",
+    "timestamp": "2026-01-02T03:04:05Z",
+    "tokens_used": 0,
+    "tsa_token": null
+  }
+}

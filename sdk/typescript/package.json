@@ -1,0 +1,13 @@
+{
+  "name": "@reede/client",
+  "version": "0.8.0",
+  "description": "Authenticated Reede lifecycle and agent-host clients with offline receipt verification",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": { ".": { "types": "./src/index.d.ts", "import": "./src/index.js" } },
+  "files": ["src", "README.md", "LICENSE", "NOTICE"],
+  "engines": { "node": ">=22" },
+  "license": "Apache-2.0",
+  "scripts": { "test": "node --test test/*.test.js" }
+}

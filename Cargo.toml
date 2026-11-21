@@ -1,0 +1,69 @@
+[package]
+name = "reede"
+version = "0.8.0"
+edition = "2021"
+# Verified: `cargo +1.89.0 test --locked` passes (2026-10-03). Older toolchains
+# are untested, not known-broken.
+rust-version = "1.89"
+license = "Apache-2.0"
+description = "Governed runtime for AI agents: budget, egress, grants and leases checked per run, with signed, hash-chained receipts that verify offline."
+readme = "README.md"
+repository = "https://github.com/NMA-vc/reede"
+homepage = "https://github.com/NMA-vc/reede"
+keywords = ["agents", "receipts", "opentelemetry", "audit", "governance"]
+categories = ["cryptography", "development-tools"]
+# The sdk-conformance test needs sdk/ at run time; it is opt-in and not run from the packaged crate.
+exclude = [".github", "scripts/rustsec-snapshot", "sdk", "skills", "examples/otel"]
+
+# The portable one-way-dependency gate walks default/all-feature resolved graphs and rejects
+# local dependencies outside this crate, including symlink escapes. See
+# scripts/check-one-way-dependency.py (paths relative to this manifest).
+
+[dependencies]
+async-trait = "0.1"
+base64 = "0.21"
+chrono = { version = "0.4", features = ["serde"] }
+ed25519-dalek = { version = "2.1", features = ["serde"] }
+hex = "0.4"
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+
+serde_json = "1.0"
+sha2 = "0.10"
+thiserror = "1.0"
+tokio = { version = "1.35", features = ["full"] }
+toml = "0.8"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+url = "2.5"
+
+uuid = { version = "1.6", features = ["v4", "serde"] }
+
+# the HTTP client for the `kill`, `tasks` and `lease` verbs. Optional, so the
+# default build (and the `verify` binary) carries no HTTP client. External crate only: the
+# one-way rule (no host-application crate in reede's graph) holds with the feature on.
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"], optional = true }
+
+# `reede serve`: a local OTLP/HTTP trace ingest that seals each span into a receipt. Optional,
+# so the default build and the `verify` binary carry no protobuf runtime. Apache-2.0 only.
+prost = { version = "0.14", default-features = false, features = ["derive", "std"], optional = true }
+
+[features]
+default = []
+cli = ["dep:reqwest"]
+ingest = ["dep:prost"]
+# Explicit cross-language transport gate; default Rust tests need neither runtime.
+sdk-conformance = []
+
+# Runs the real binary against a local stub server; needs the HTTP client.
+[[test]]
+name = "cli_http"
+required-features = ["cli"]
+
+[[test]]
+name = "sdk_conformance"
+required-features = ["sdk-conformance"]
+
+[[test]]
+name = "ingest_serve"
+required-features = ["ingest"]

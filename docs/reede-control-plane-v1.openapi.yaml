@@ -1,0 +1,691 @@
+openapi: 3.1.0
+info:
+  title: Reede Control Plane API
+  version: 1.0.0
+  description: |
+    Tenant-isolated runtime contract for immutable AgentSpecs, Tasks, Events,
+    Logs, and Receipts. Tenant and actor authority are derived exclusively from
+    the bearer token. The implementation base URL is runtime-configured.
+servers:
+  - url: https://reede.example.invalid/v1
+    description: Illustrative only; clients MUST use the deployment-configured base URL.
+security:
+  - bearerAuth: []
+tags:
+  - { name: AgentSpecs }
+  - { name: Sessions }
+  - { name: Tasks }
+  - { name: Evidence }
+paths:
+  /agents:
+    get:
+      tags: [AgentSpecs]
+      summary: List active AgentSpecs visible to the authenticated tenant
+      description: Requires `reede:read`. Results are ordered by agent id ascending. Tenant authority comes from authentication, never query input.
+      operationId: listAgents
+      x-required-scopes: [reede:read]
+      parameters: [{ $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: AgentSpec page, content: { application/json: { schema: { $ref: '#/components/schemas/AgentList' } } } }
+        default: { $ref: '#/components/responses/Error' }
+    post:
+      tags: [AgentSpecs]
+      summary: Create the first immutable AgentSpec version
+      description: Requires `reede:write`. The authenticated tenant and actor are recorded by the service.
+      operationId: createAgent
+      x-required-scopes: [reede:write]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpecInput' } } } }
+      responses:
+        '201': { description: Created version, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpec' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /agents/{agent_id}:
+    parameters: [{ $ref: '#/components/parameters/AgentId' }]
+    get:
+      tags: [AgentSpecs]
+      summary: Retrieve the active AgentSpec version
+      description: Requires `reede:read`. A resource owned by another tenant is indistinguishable from a missing resource and returns 404.
+      operationId: getAgent
+      x-required-scopes: [reede:read]
+      responses:
+        '200': { description: Active AgentSpec, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpec' } } } }
+        default: { $ref: '#/components/responses/Error' }
+    patch:
+      tags: [AgentSpecs]
+      summary: Create an immutable AgentSpec version
+      description: Requires `reede:write`. Changed canonical content creates a version; the prior version remains retrievable.
+      operationId: updateAgent
+      x-required-scopes: [reede:write]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpecUpdate' } } } }
+      responses:
+        '200': { description: Existing identical or newly created version, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpec' } } } }
+        default: { $ref: '#/components/responses/Error' }
+    delete:
+      tags: [AgentSpecs]
+      summary: Archive an AgentSpec without deleting version history
+      description: Requires `reede:admin`. Immutable versions and execution evidence remain available.
+      operationId: archiveAgent
+      x-required-scopes: [reede:admin]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      responses:
+        '204': { description: Archived }
+        default: { $ref: '#/components/responses/Error' }
+  /agents/{agent_id}/versions:
+    parameters: [{ $ref: '#/components/parameters/AgentId' }]
+    get:
+      tags: [AgentSpecs]
+      summary: List immutable AgentSpec versions
+      description: Requires `reede:read`. Versions are ordered newest first and expose declared secret names, never values.
+      operationId: listAgentVersions
+      x-required-scopes: [reede:read]
+      parameters: [{ $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: Version page, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpecVersionPage' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /agents/{agent_id}/versions/{version_or_digest}:
+    parameters:
+      - { $ref: '#/components/parameters/AgentId' }
+      - { $ref: '#/components/parameters/VersionOrDigest' }
+    get:
+      tags: [AgentSpecs]
+      summary: Retrieve one exact immutable AgentSpec version
+      description: Requires `reede:read`. The selector is a decimal version or its complete sha256 digest; aliases such as active are forbidden.
+      operationId: getAgentVersion
+      x-required-scopes: [reede:read]
+      responses:
+        '200': { description: Exact version, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpec' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /agents/{agent_id}/diff:
+    parameters: [{ $ref: '#/components/parameters/AgentId' }]
+    post:
+      tags: [AgentSpecs]
+      summary: Classify a candidate change without mutation
+      description: Requires `reede:write`.
+      operationId: diffAgent
+      x-required-scopes: [reede:write]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpecDiffRequest' } } } }
+      responses:
+        '200': { description: Classified diff, content: { application/json: { schema: { $ref: '#/components/schemas/AgentSpecDiff' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /agents/{agent_id}/secrets/{secret_name}:
+    parameters: [{ $ref: '#/components/parameters/AgentId' }, { $ref: '#/components/parameters/SecretName' }]
+    put:
+      tags: [AgentSpecs]
+      summary: Set a declared write-only secret
+      description: Requires `reede:secrets`. Neither this response nor any read model reveals the value.
+      operationId: setAgentSecret
+      x-required-scopes: [reede:secrets]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/SecretWrite' } } } }
+      responses:
+        '204': { description: Stored }
+        default: { $ref: '#/components/responses/Error' }
+  /agents/{agent_id}/tasks:
+    parameters: [{ $ref: '#/components/parameters/AgentId' }]
+    post:
+      tags: [Tasks]
+      summary: Accept a new Task for asynchronous execution
+      description: Requires `reede:run`. Actor and tenant are derived from authentication; supplied authority is a bounded grant, not identity.
+      operationId: createTask
+      x-required-scopes: [reede:run]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CreateTaskRequest' } } } }
+      responses:
+        '202': { description: Accepted, content: { application/json: { schema: { $ref: '#/components/schemas/TaskAccepted' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /sessions:
+    get:
+      tags: [Sessions]
+      summary: List tenant-owned Sessions
+      description: Requires `reede:read`. Results are newest first.
+      operationId: listSessions
+      x-required-scopes: [reede:read]
+      parameters: [{ $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: Session page, content: { application/json: { schema: { $ref: '#/components/schemas/SessionPage' } } } }
+        default: { $ref: '#/components/responses/Error' }
+    post:
+      tags: [Sessions]
+      summary: Create a lazy Session
+      description: Requires `reede:run`.
+      operationId: createSession
+      x-required-scopes: [reede:run]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CreateSessionRequest' } } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/Session' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /sessions/{session_id}:
+    parameters: [{ $ref: '#/components/parameters/SessionId' }]
+    get:
+      tags: [Sessions]
+      summary: Retrieve a tenant-owned Session
+      description: Requires `reede:read`; cross-tenant lookup returns 404.
+      operationId: getSession
+      x-required-scopes: [reede:read]
+      responses:
+        '200': { description: Session, content: { application/json: { schema: { $ref: '#/components/schemas/Session' } } } }
+        default: { $ref: '#/components/responses/Error' }
+    delete:
+      tags: [Sessions]
+      summary: Destroy a Session sandbox
+      description: Requires `reede:run`. Historical evidence is retained.
+      operationId: destroySession
+      x-required-scopes: [reede:run]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      responses:
+        '202': { description: Accepted }
+        default: { $ref: '#/components/responses/Error' }
+  /sessions/{session_id}/events:
+    parameters: [{ $ref: '#/components/parameters/SessionId' }]
+    get:
+      tags: [Evidence]
+      summary: Replay Events as JSON or SSE
+      description: |
+        Requires `reede:read`. Results are oldest first. `after` and the
+        `Last-Event-ID` header are exclusive stable Event-id cursors. If both
+        are supplied they MUST be identical; otherwise return 400
+        `cursor_conflict`. Unknown, malformed, or expired cursors return 400
+        `invalid_cursor`. JSON items and SSE `data` are byte-equivalent
+        EventEnvelope JSON representations. SSE uses `id: <event.id>` and
+        `event: <payload.type>`. While idle the server sends `: heartbeat` at
+        least every 20 seconds; comments are not Events and have no id/data.
+        After delivering a terminal Event for every Task selected by this
+        stream, the server closes the stream. Reconnect resumes exclusively
+        after the last stable id.
+      operationId: sessionEvents
+      x-required-scopes: [reede:read]
+      parameters:
+        - { $ref: '#/components/parameters/After' }
+        - { $ref: '#/components/parameters/LastEventId' }
+        - { $ref: '#/components/parameters/Limit' }
+      responses:
+        '200':
+          description: JSON replay page or SSE stream selected by Accept
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/EventPage' } }
+            text/event-stream: { schema: { type: string, description: SSE framing whose data is exactly one EventEnvelope. } }
+        default: { $ref: '#/components/responses/Error' }
+  /tasks:
+    get:
+      tags: [Tasks]
+      summary: List tenant-owned Tasks
+      description: Requires `reede:read`. Results are newest first.
+      operationId: listTasks
+      x-required-scopes: [reede:read]
+      parameters:
+        - { $ref: '#/components/parameters/Cursor' }
+        - { $ref: '#/components/parameters/Limit' }
+        - { name: agent_id, in: query, schema: { $ref: '#/components/schemas/AgentId' } }
+        - { name: session_id, in: query, schema: { $ref: '#/components/schemas/Uuid' } }
+      responses:
+        '200': { description: Task page, content: { application/json: { schema: { $ref: '#/components/schemas/TaskPage' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /tasks/{task_id}:
+    parameters: [{ $ref: '#/components/parameters/TaskId' }]
+    get:
+      tags: [Tasks]
+      summary: Retrieve authoritative Task truth
+      description: Requires `reede:read`; cross-tenant lookup returns 404.
+      operationId: getTask
+      x-required-scopes: [reede:read]
+      responses:
+        '200': { description: Task, content: { application/json: { schema: { $ref: '#/components/schemas/Task' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /tasks/{task_id}/interrupt:
+    parameters: [{ $ref: '#/components/parameters/TaskId' }]
+    post:
+      tags: [Tasks]
+      summary: Request cooperative interruption
+      description: Requires `reede:run`. Terminal Tasks return 409 `already_terminal`.
+      operationId: interruptTask
+      x-required-scopes: [reede:run]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      responses:
+        '202': { description: Accepted }
+        default: { $ref: '#/components/responses/Error' }
+  /tasks/{task_id}/kill:
+    parameters: [{ $ref: '#/components/parameters/TaskId' }]
+    post:
+      tags: [Tasks]
+      summary: Terminate immediately and revoke the active lease
+      description: Requires `reede:run`. Terminal Tasks return 409 `already_terminal`.
+      operationId: killTask
+      x-required-scopes: [reede:run]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      responses:
+        '202': { description: Accepted }
+        default: { $ref: '#/components/responses/Error' }
+  /tasks/{task_id}/resume:
+    parameters: [{ $ref: '#/components/parameters/TaskId' }]
+    post:
+      tags: [Tasks]
+      summary: Create a new Task from a prior checkpoint
+      description: Requires `reede:run`. This ingress never changes or reopens the prior Task. It requires new authority/approval and links the new receipt chain to the prior terminal receipt.
+      operationId: resumeTask
+      x-required-scopes: [reede:run]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/ResumeTaskRequest' } } } }
+      responses:
+        '202': { description: New Task accepted, content: { application/json: { schema: { $ref: '#/components/schemas/TaskAccepted' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /tasks/{task_id}/logs:
+    parameters: [{ $ref: '#/components/parameters/TaskId' }]
+    get:
+      tags: [Evidence]
+      summary: List redacted Task log records
+      description: Requires `reede:read`. Records are oldest first with stable opaque cursors. Raw prompts/results appear only when the immutable capture policy allowed them; otherwise content is omitted and redaction/hash fields remain.
+      operationId: listTaskLogs
+      x-required-scopes: [reede:read]
+      parameters: [{ $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: Log page, content: { application/json: { schema: { $ref: '#/components/schemas/LogPage' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /tasks/{task_id}/receipts:
+    parameters: [{ $ref: '#/components/parameters/TaskId' }]
+    get:
+      tags: [Evidence]
+      summary: List immutable Task receipt chain entries
+      description: Requires `reede:read`. Oldest-first entries include offline verification material but never secrets or mutable runtime history.
+      operationId: listTaskReceipts
+      x-required-scopes: [reede:read]
+      parameters: [{ $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: Receipt page, content: { application/json: { schema: { $ref: '#/components/schemas/ReceiptPage' } } } }
+        default: { $ref: '#/components/responses/Error' }
+  /tasks/{task_id}/receipts/{receipt_id}:
+    parameters: [{ $ref: '#/components/parameters/TaskId' }, { $ref: '#/components/parameters/ReceiptId' }]
+    get:
+      tags: [Evidence]
+      summary: Retrieve one immutable receipt with verification material
+      description: Requires `reede:read`; both resources are tenant-scoped and cross-tenant lookup returns 404.
+      operationId: getTaskReceipt
+      x-required-scopes: [reede:read]
+      responses:
+        '200': { description: Receipt, content: { application/json: { schema: { $ref: '#/components/schemas/Receipt' } } } }
+        default: { $ref: '#/components/responses/Error' }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  parameters:
+    AgentId: { name: agent_id, in: path, required: true, schema: { $ref: '#/components/schemas/AgentId' } }
+    SessionId: { name: session_id, in: path, required: true, schema: { $ref: '#/components/schemas/Uuid' } }
+    TaskId: { name: task_id, in: path, required: true, schema: { $ref: '#/components/schemas/Uuid' } }
+    ReceiptId: { name: receipt_id, in: path, required: true, schema: { $ref: '#/components/schemas/ReceiptId' } }
+    SecretName: { name: secret_name, in: path, required: true, schema: { type: string, pattern: '^[A-Z][A-Z0-9_]{0,127}$' } }
+    VersionOrDigest: { name: version_or_digest, in: path, required: true, schema: { type: string, pattern: '^(?:[1-9][0-9]*|sha256:[a-f0-9]{64})$' } }
+    IdempotencyKey: { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8, maxLength: 255, pattern: '^[!-~]+$' } }
+    Cursor: { name: cursor, in: query, description: Opaque exclusive page cursor, schema: { $ref: '#/components/schemas/Cursor' } }
+    After: { name: after, in: query, description: Stable exclusive Event id replay cursor, schema: { $ref: '#/components/schemas/EventId' } }
+    LastEventId: { name: Last-Event-ID, in: header, description: Stable exclusive Event id replay cursor, schema: { $ref: '#/components/schemas/EventId' } }
+    Limit: { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 50 } }
+  responses:
+    Error: { description: Stable non-leaking error envelope, headers: { Retry-After: { description: Delay in seconds when rate limited, schema: { type: integer, minimum: 0 } } }, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+  schemas:
+    Uuid: { type: string, format: uuid }
+    AgentId: { type: string, pattern: '^agt_[A-Za-z0-9_-]{16,64}$' }
+    EventId: { type: string, pattern: '^evt_[A-Za-z0-9_-]{16,96}$' }
+    ReceiptId: { type: string, pattern: '^rcpt_[A-Za-z0-9_-]{16,96}$' }
+    Cursor: { type: string, minLength: 16, maxLength: 1024, pattern: '^[A-Za-z0-9._~-]+$' }
+    Digest: { type: string, pattern: '^sha256:[a-f0-9]{64}$' }
+    Metadata: { type: object, maxProperties: 64, additionalProperties: true }
+    _AgentSpecFields:
+      type: object
+      required: [slug, display_name, runtime, input_schema, output_schema, policy]
+      properties:
+        slug: { type: string, pattern: '^[a-z0-9][a-z0-9-]{1,62}$' }
+        display_name: { type: string, minLength: 1, maxLength: 200 }
+        instructions: { type: string, maxLength: 200000 }
+        runtime: { $ref: '#/components/schemas/Runtime' }
+        input_schema: { type: object, maxProperties: 256, additionalProperties: true }
+        output_schema: { type: object, maxProperties: 256, additionalProperties: true }
+        capabilities: { type: array, maxItems: 128, uniqueItems: true, items: { $ref: '#/components/schemas/Capability' } }
+        policy: { $ref: '#/components/schemas/Policy' }
+        secret_names: { type: array, maxItems: 128, uniqueItems: true, items: { type: string, pattern: '^[A-Z][A-Z0-9_]{0,127}$' } }
+        metadata: { $ref: '#/components/schemas/Metadata' }
+    AgentSpecInput:
+      allOf:
+        - { $ref: '#/components/schemas/_AgentSpecFields' }
+      unevaluatedProperties: false
+    AgentSpecUpdate:
+      allOf:
+        - { $ref: '#/components/schemas/_AgentSpecFields' }
+        - type: object
+          required: [expected_version]
+          properties: { expected_version: { type: integer, minimum: 1 }, request_hot_reload: { type: boolean, default: false } }
+      unevaluatedProperties: false
+    AgentSpec:
+      allOf:
+        - { $ref: '#/components/schemas/_AgentSpecFields' }
+        - type: object
+          required: [id, version, digest, lifecycle_state, compatibility_state, reapproval_state, created_at]
+          properties:
+            id: { $ref: '#/components/schemas/AgentId' }
+            version: { type: integer, minimum: 1 }
+            digest: { $ref: '#/components/schemas/Digest' }
+            lifecycle_state: { type: string, enum: [active, superseded, archived] }
+            compatibility_state: { type: string, enum: [compatible, restart_required, new_session_required] }
+            reapproval_state: { type: string, enum: [not_required, approval_required, approved, rejected] }
+            created_at: { type: string, format: date-time }
+      unevaluatedProperties: false
+    AgentList: { $ref: '#/components/schemas/AgentSpecVersionPage' }
+    AgentSpecVersionPage:
+      type: object
+      additionalProperties: false
+      required: [items]
+      properties: { items: { type: array, maxItems: 200, items: { $ref: '#/components/schemas/AgentSpec' } }, next_cursor: { $ref: '#/components/schemas/Cursor' } }
+    AgentSpecDiffRequest:
+      type: object
+      additionalProperties: false
+      required: [candidate]
+      properties: { candidate: { $ref: '#/components/schemas/AgentSpecInput' } }
+    AgentSpecDiff:
+      type: object
+      additionalProperties: false
+      required: [unchanged, compatibility_state, reapproval_state, changes]
+      properties:
+        unchanged: { type: boolean }
+        compatibility_state: { type: string, enum: [compatible, restart_required, new_session_required] }
+        reapproval_state: { type: string, enum: [not_required, approval_required] }
+        changes: { type: array, maxItems: 512, items: { $ref: '#/components/schemas/SpecChange' } }
+    SpecChange:
+      type: object
+      additionalProperties: false
+      required: [kind, path, authority_widening]
+      properties:
+        kind: { type: string, enum: [prompt, runtime, capability, schema, egress, budget, secret_name, identity, policy] }
+        path: { type: string, minLength: 1, maxLength: 1024 }
+        authority_widening: { type: boolean }
+        before: {}
+        after: {}
+    SecretWrite:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties: { value: { type: string, minLength: 1, maxLength: 65536, writeOnly: true } }
+    Runtime:
+      type: object
+      additionalProperties: false
+      required: [kind]
+      properties:
+        kind: { type: string, enum: [oci, claude_code, codex, openclaw] }
+        image: { type: string, maxLength: 2048 }
+        model: { type: string, maxLength: 256 }
+    Capability:
+      type: object
+      additionalProperties: false
+      required: [name, transport, endpoint, input_schema, output_schema, fingerprint]
+      properties:
+        name: { type: string, pattern: '^[a-z][a-z0-9_.-]{0,127}$' }
+        description: { type: string, maxLength: 2000 }
+        transport: { type: string, enum: [stdio, http, sse] }
+        endpoint: { type: string, format: uri, maxLength: 2048 }
+        input_schema: { type: object, additionalProperties: true }
+        output_schema: { type: object, additionalProperties: true }
+        fingerprint: { $ref: '#/components/schemas/Digest' }
+    Policy:
+      type: object
+      additionalProperties: false
+      required: [id, max_total_tokens, egress_allowlist, capture_policy]
+      properties:
+        id: { type: string, pattern: '^pol_[A-Za-z0-9_-]{16,64}$' }
+        max_total_tokens: { type: integer, minimum: 1 }
+        max_cost_eur: { type: number, exclusiveMinimum: 0 }
+        egress_allowlist: { type: array, maxItems: 256, uniqueItems: true, items: { type: string, format: uri, maxLength: 2048 } }
+        require_human_approval: { type: boolean, default: false }
+        capture_policy: { type: string, enum: [hashes_only, redacted, raw_allowed] }
+    ResourceShape:
+      type: object
+      additionalProperties: false
+      properties: { cpu_millis: { type: integer, minimum: 1 }, memory_mb: { type: integer, minimum: 64 }, disk_mb: { type: integer, minimum: 64 } }
+    CreateSessionRequest:
+      type: object
+      additionalProperties: false
+      required: [agent_id]
+      properties: { agent_id: { $ref: '#/components/schemas/AgentId' }, agent_version: { type: integer, minimum: 1 }, resource_shape: { $ref: '#/components/schemas/ResourceShape' } }
+    Session:
+      type: object
+      additionalProperties: false
+      required: [id, agent_id, agent_spec_digest, state, sandbox_state, created_at]
+      properties:
+        id: { $ref: '#/components/schemas/Uuid' }
+        agent_id: { $ref: '#/components/schemas/AgentId' }
+        agent_spec_digest: { $ref: '#/components/schemas/Digest' }
+        state: { type: string, enum: [active, suspended, terminated] }
+        sandbox_state: { type: string, enum: [lazy, running, stopped, failed] }
+        resource_shape: { $ref: '#/components/schemas/ResourceShape' }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+    SessionPage:
+      type: object
+      additionalProperties: false
+      required: [items]
+      properties: { items: { type: array, maxItems: 200, items: { $ref: '#/components/schemas/Session' } }, next_cursor: { $ref: '#/components/schemas/Cursor' } }
+    AuthorityGrant:
+      type: object
+      additionalProperties: false
+      required: [policy_id, credential_lease_id, max_total_tokens, approval_id]
+      properties:
+        policy_id: { type: string, pattern: '^pol_[A-Za-z0-9_-]{16,64}$' }
+        credential_lease_id: { type: string, pattern: '^lease_[A-Za-z0-9_-]{16,96}$' }
+        approval_id: { type: string, pattern: '^apr_[A-Za-z0-9_-]{16,96}$' }
+        max_total_tokens: { type: integer, minimum: 1 }
+        max_cost_eur: { type: number, exclusiveMinimum: 0 }
+    CreateTaskRequest:
+      type: object
+      additionalProperties: false
+      required: [input, authority, trigger]
+      properties:
+        session_id: { $ref: '#/components/schemas/Uuid' }
+        input: {}
+        authority: { $ref: '#/components/schemas/AuthorityGrant' }
+        trigger: { $ref: '#/components/schemas/Trigger' }
+        workflow_ref: { $ref: '#/components/schemas/VersionRef' }
+        brief_ref: { $ref: '#/components/schemas/VersionRef' }
+    ResumeTaskRequest:
+      type: object
+      additionalProperties: false
+      required: [checkpoint_id, prior_terminal_receipt_id, authority]
+      properties:
+        checkpoint_id: { type: string, pattern: '^ckpt_[A-Za-z0-9_-]{16,96}$' }
+        prior_terminal_receipt_id: { $ref: '#/components/schemas/ReceiptId' }
+        authority: { $ref: '#/components/schemas/AuthorityGrant' }
+    Trigger:
+      type: object
+      additionalProperties: false
+      required: [type]
+      properties:
+        type: { type: string, enum: [api, schedule, webhook, workflow, manual, resume] }
+        reference: { type: string, maxLength: 1024 }
+    VersionRef:
+      type: object
+      additionalProperties: false
+      required: [id, version]
+      properties: { id: { type: string, minLength: 1, maxLength: 128 }, version: { type: string, minLength: 1, maxLength: 128 }, digest: { $ref: '#/components/schemas/Digest' } }
+    ActorReference:
+      type: object
+      additionalProperties: false
+      required: [subject_id, kind]
+      description: Tenant-safe opaque actor reference derived from authentication; no email or tenant authority.
+      properties: { subject_id: { type: string, pattern: '^sub_[A-Za-z0-9_-]{16,96}$' }, kind: { type: string, enum: [user, service, system] } }
+    TaskAccepted:
+      type: object
+      additionalProperties: false
+      required: [task_id, session_id, status_url, events_url]
+      properties: { task_id: { $ref: '#/components/schemas/Uuid' }, session_id: { $ref: '#/components/schemas/Uuid' }, status_url: { type: string, format: uri-reference, maxLength: 2048 }, events_url: { type: string, format: uri-reference, maxLength: 2048 } }
+    Usage:
+      type: object
+      additionalProperties: false
+      required: [models, tools, total_cost_eur, credits]
+      properties:
+        models: { type: array, maxItems: 128, items: { $ref: '#/components/schemas/ModelUsage' } }
+        tools: { type: array, maxItems: 256, items: { $ref: '#/components/schemas/ToolUsage' } }
+        total_cost_eur: { type: number, minimum: 0 }
+        credits: { type: number, minimum: 0 }
+    ModelUsage:
+      type: object
+      additionalProperties: false
+      required: [provider, model, input_tokens, output_tokens]
+      properties: { provider: { type: string, maxLength: 128 }, model: { type: string, maxLength: 256 }, input_tokens: { type: integer, minimum: 0 }, output_tokens: { type: integer, minimum: 0 }, cost_eur: { type: number, minimum: 0 } }
+    ToolUsage:
+      type: object
+      additionalProperties: false
+      required: [name, calls]
+      properties: { name: { type: string, maxLength: 128 }, calls: { type: integer, minimum: 0 }, cost_eur: { type: number, minimum: 0 } }
+    Provenance:
+      type: object
+      additionalProperties: false
+      properties:
+        source_urls: { type: array, maxItems: 256, uniqueItems: true, items: { type: string, format: uri, maxLength: 2048 } }
+        file_urls: { type: array, maxItems: 256, uniqueItems: true, items: { type: string, format: uri, maxLength: 2048 } }
+        parent_task_id: { $ref: '#/components/schemas/Uuid' }
+        checkpoint_id: { type: string, pattern: '^ckpt_[A-Za-z0-9_-]{16,96}$' }
+    ReceiptVerification:
+      type: object
+      additionalProperties: false
+      required: [signature_state, tsa_state]
+      properties:
+        signature_state: { type: string, enum: [unverified, verified, failed] }
+        tsa_state: { type: string, enum: [not_requested, pending, verified, failed] }
+        verified_at: { type: string, format: date-time }
+        failure_code: { type: string, enum: [signature_invalid, payload_hash_mismatch, chain_invalid, tsa_invalid] }
+    Task:
+      type: object
+      additionalProperties: false
+      required: [id, session_id, agent_id, agent_spec_digest, actor, trigger, input_hash, capture_policy, authority, status, usage, provenance, receipt_verification, created_at]
+      properties:
+        id: { $ref: '#/components/schemas/Uuid' }
+        session_id: { $ref: '#/components/schemas/Uuid' }
+        agent_id: { $ref: '#/components/schemas/AgentId' }
+        agent_spec_digest: { $ref: '#/components/schemas/Digest' }
+        actor: { $ref: '#/components/schemas/ActorReference' }
+        trigger: { $ref: '#/components/schemas/Trigger' }
+        input_hash: { $ref: '#/components/schemas/Digest' }
+        captured_input: { description: Present only under raw_allowed capture policy. }
+        capture_policy: { type: string, enum: [hashes_only, redacted, raw_allowed] }
+        workflow_ref: { $ref: '#/components/schemas/VersionRef' }
+        brief_ref: { $ref: '#/components/schemas/VersionRef' }
+        authority: { $ref: '#/components/schemas/AuthorityGrant' }
+        status: { type: string, enum: [pending, running, completing, succeeded, failed, killed, budget_exhausted] }
+        stop_reason: { type: string, enum: [completed, evaluator_failed, receipt_verification_failed, runtime_error, interrupted, killed, budget_exhausted, policy_denied, lease_revoked] }
+        terminal_receipt_id: { $ref: '#/components/schemas/ReceiptId' }
+        result_hash: { $ref: '#/components/schemas/Digest' }
+        result_ref: { type: string, format: uri-reference, maxLength: 2048 }
+        usage: { $ref: '#/components/schemas/Usage' }
+        provenance: { $ref: '#/components/schemas/Provenance' }
+        receipt_verification: { $ref: '#/components/schemas/ReceiptVerification' }
+        created_at: { type: string, format: date-time }
+        started_at: { type: string, format: date-time }
+        finished_at: { type: string, format: date-time }
+      allOf:
+        - if: { properties: { status: { enum: [succeeded, failed, killed, budget_exhausted] } }, required: [status] }
+          then: { required: [stop_reason, terminal_receipt_id, finished_at] }
+        - if: { properties: { status: { const: succeeded } }, required: [status] }
+          then: { anyOf: [{ required: [result_hash] }, { required: [result_ref] }] }
+    TaskPage:
+      type: object
+      additionalProperties: false
+      required: [items]
+      properties: { items: { type: array, maxItems: 200, items: { $ref: '#/components/schemas/Task' } }, next_cursor: { $ref: '#/components/schemas/Cursor' } }
+    EventEnvelope:
+      type: object
+      additionalProperties: false
+      required: [id, session_id, sequence, timestamp, payload]
+      properties:
+        id: { $ref: '#/components/schemas/EventId' }
+        session_id: { $ref: '#/components/schemas/Uuid' }
+        task_id: { $ref: '#/components/schemas/Uuid' }
+        sequence: { type: integer, minimum: 1 }
+        timestamp: { type: string, format: date-time }
+        payload: { $ref: '#/components/schemas/EventPayload' }
+    EventPayload:
+      oneOf:
+        - { $ref: '#/components/schemas/StatusEvent' }
+        - { $ref: '#/components/schemas/UsageEvent' }
+        - { $ref: '#/components/schemas/ToolEvent' }
+        - { $ref: '#/components/schemas/MessageEvent' }
+        - { $ref: '#/components/schemas/CheckpointEvent' }
+        - { $ref: '#/components/schemas/ReceiptEvent' }
+        - { $ref: '#/components/schemas/TerminalEvent' }
+      discriminator: { propertyName: type }
+    StatusEvent: { type: object, additionalProperties: false, required: [type, status], properties: { type: { const: status }, status: { type: string, enum: [pending, running, completing] } } }
+    UsageEvent: { type: object, additionalProperties: false, required: [type, usage], properties: { type: { const: usage }, usage: { $ref: '#/components/schemas/Usage' } } }
+    ToolEvent: { type: object, additionalProperties: false, required: [type, tool, phase], properties: { type: { const: tool }, tool: { type: string, maxLength: 128 }, phase: { type: string, enum: [started, completed, failed] }, input_hash: { $ref: '#/components/schemas/Digest' }, result_hash: { $ref: '#/components/schemas/Digest' } } }
+    MessageEvent: { type: object, additionalProperties: false, required: [type, content_hash, redacted], properties: { type: { const: message }, content_hash: { $ref: '#/components/schemas/Digest' }, redacted: { type: boolean }, content: { type: string, maxLength: 100000 } } }
+    CheckpointEvent: { type: object, additionalProperties: false, required: [type, checkpoint_id, checkpoint_hash], properties: { type: { const: checkpoint }, checkpoint_id: { type: string, pattern: '^ckpt_[A-Za-z0-9_-]{16,96}$' }, checkpoint_hash: { $ref: '#/components/schemas/Digest' } } }
+    ReceiptEvent: { type: object, additionalProperties: false, required: [type, receipt_id], properties: { type: { const: receipt }, receipt_id: { $ref: '#/components/schemas/ReceiptId' } } }
+    TerminalEvent: { type: object, additionalProperties: false, required: [type, status, stop_reason, terminal_receipt_id, provenance], properties: { type: { const: terminal }, status: { type: string, enum: [succeeded, failed, killed, budget_exhausted] }, stop_reason: { type: string, enum: [completed, evaluator_failed, receipt_verification_failed, runtime_error, interrupted, killed, budget_exhausted, policy_denied, lease_revoked] }, terminal_receipt_id: { $ref: '#/components/schemas/ReceiptId' }, result_hash: { $ref: '#/components/schemas/Digest' }, result_ref: { type: string, format: uri-reference, maxLength: 2048 }, provenance: { $ref: '#/components/schemas/Provenance' }, resume_url: { type: string, format: uri-reference, maxLength: 2048 } } }
+    EventPage:
+      type: object
+      additionalProperties: false
+      required: [items]
+      properties: { items: { type: array, maxItems: 200, items: { $ref: '#/components/schemas/EventEnvelope' } }, next_cursor: { $ref: '#/components/schemas/Cursor' } }
+    LogRecord:
+      type: object
+      additionalProperties: false
+      required: [id, sequence, timestamp, level, kind, content_hash, redacted]
+      properties:
+        id: { type: string, pattern: '^log_[A-Za-z0-9_-]{16,96}$' }
+        sequence: { type: integer, minimum: 1 }
+        timestamp: { type: string, format: date-time }
+        level: { type: string, enum: [debug, info, warn, error] }
+        kind: { type: string, enum: [runtime, model_prompt, model_result, tool_input, tool_result, policy] }
+        content_hash: { $ref: '#/components/schemas/Digest' }
+        redacted: { type: boolean }
+        content: { type: string, maxLength: 100000, description: Present only when capture_policy is raw_allowed. }
+        metadata: { $ref: '#/components/schemas/Metadata' }
+    LogPage:
+      type: object
+      additionalProperties: false
+      required: [items]
+      properties: { items: { type: array, maxItems: 200, items: { $ref: '#/components/schemas/LogRecord' } }, next_cursor: { $ref: '#/components/schemas/Cursor' } }
+    Receipt:
+      type: object
+      additionalProperties: false
+      required: [id, task_id, sequence, kind, canonical_payload, payload_hash, public_key_id, public_key_hex, signature, verification, created_at]
+      properties:
+        id: { $ref: '#/components/schemas/ReceiptId' }
+        task_id: { $ref: '#/components/schemas/Uuid' }
+        sequence: { type: integer, minimum: 1 }
+        kind: { type: string, enum: [accepted, checkpoint, terminal, resumed] }
+        canonical_payload: { type: string, minLength: 1, maxLength: 1000000, description: Canonical length-prefixed payload encoded as base64url. }
+        payload_hash: { $ref: '#/components/schemas/Digest' }
+        previous_receipt_id: { $ref: '#/components/schemas/ReceiptId' }
+        parent_receipt_id: { $ref: '#/components/schemas/ReceiptId' }
+        public_key_id: { type: string, pattern: '^key_[A-Za-z0-9_-]{16,96}$' }
+        public_key_hex: { type: string, minLength: 64, maxLength: 64, pattern: '^[a-f0-9]{64}$', description: Embedded Ed25519 verifying key for offline verification. }
+        signature: { type: string, minLength: 128, maxLength: 128, pattern: '^[a-f0-9]{128}$', description: Hex-encoded Ed25519 signature. }
+        tsa: { $ref: '#/components/schemas/TsaEvidence' }
+        verification: { $ref: '#/components/schemas/ReceiptVerification' }
+        created_at: { type: string, format: date-time }
+    TsaEvidence:
+      type: object
+      additionalProperties: false
+      required: [token, token_hash]
+      properties:
+        token: { type: string, minLength: 1, maxLength: 2000000, contentEncoding: base64, description: Embedded RFC 3161 token for offline verification. }
+        token_hash: { $ref: '#/components/schemas/Digest' }
+    ReceiptPage:
+      type: object
+      additionalProperties: false
+      required: [items]
+      properties: { items: { type: array, maxItems: 200, items: { $ref: '#/components/schemas/Receipt' } }, next_cursor: { $ref: '#/components/schemas/Cursor' } }
+    FieldViolation:
+      type: object
+      additionalProperties: false
+      required: [field, reason]
+      properties: { field: { type: string, minLength: 1, maxLength: 512 }, reason: { type: string, minLength: 1, maxLength: 512 } }
+    Error:
+      type: object
+      additionalProperties: false
+      required: [code, message, request_id]
+      properties:
+        code:
+          type: string
+          enum: [authentication_required, authorization_denied, not_found, validation_failed, invalid_cursor, cursor_conflict, version_conflict, conflict, already_terminal, idempotency_conflict, capability_reapproval_required, rate_limited, budget_exhausted, lease_revoked, egress_denied, evaluator_failed, receipt_verification_failed, task_not_interruptible, internal]
+        message: { type: string, minLength: 1, maxLength: 1000 }
+        request_id: { type: string, pattern: '^req_[A-Za-z0-9_-]{16,96}$' }
+        retry_after: { type: integer, minimum: 0, description: Seconds until a safe retry; supplied for rate_limited and retryable failures. }
+        field_violations: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/FieldViolation' } }
+        metadata: { $ref: '#/components/schemas/Metadata' }

@@ -1,0 +1,22 @@
+{
+  "_comment": "Shared reede-v2 receipt test vector. content_hash is SHA-256 over the injective encoding (<len_hex>:<bytes> per field) of 11 fields: tenant_id, task_id, payload_summary, credits_spent, tokens_used, reservation_credits, prev_hash (empty if null), sequence_no, timestamp (RFC 3339 UTC, exactly 6 fractional digits, Z), subject_id (empty if null), signer_key_id (empty if null). signature is Ed25519 over the content_hash ASCII bytes. The test-only signing key is the Ed25519 seed of 32 bytes of 0x07; signer_key_id is the first 16 hex chars of SHA-256 over pubkey. Generated independently of the Rust writer (Python hashlib + cryptography).",
+  "expected_content_hash": "e02622f7aaf8c45ee0225b6b8e32d6d8eca90f63a8841ba716e8e73c6e2e04d6",
+  "pubkey_hex": "ea4a6c63e29c520abef5507b132ec5f9954776aebebe7b92421eea691446d22c",
+  "receipt": {
+    "content_hash": "e02622f7aaf8c45ee0225b6b8e32d6d8eca90f63a8841ba716e8e73c6e2e04d6",
+    "credits_spent": 250,
+    "format": "reede-v2",
+    "payload_summary": "battlecard:acme",
+    "prev_hash": "b718a347ef7b58725942a2b10c3363767112dac42d93fbef655c66a85efadc83",
+    "reservation_credits": 500,
+    "sequence_no": 2,
+    "signature": "2d202c7b374164ff4897271153151f265cc616704e84ea3d9d23b914bd8613667ca460cb49258dc4d5cf01373251af649e88f168e4b380e58af482f759ce4f03",
+    "signer_key_id": "fe812c12f3ab4ce6",
+    "subject_id": "subject:acme",
+    "task_id": "11111111-2222-3333-4444-555555555555",
+    "tenant_id": "tenant-shared-vector",
+    "timestamp": "2023-11-14T22:13:20.123456Z",
+    "tokens_used": 1234,
+    "tsa_token": null
+  }
+}

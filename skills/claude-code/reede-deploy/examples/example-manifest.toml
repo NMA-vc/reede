@@ -1,0 +1,40 @@
+[meta]
+schema_version = "1"
+author = "example-founder"
+
+[agent]
+id = "market-researcher"
+name = "Market Researcher"
+description = "Summarizes EU market reports on request"
+version = "1.0.0"
+base = "reede/agent-base"
+
+[agent.model]
+provider = "cortecs"
+name = "cortecs-default"
+temperature = 0.3
+
+[agent.prompt]
+system = "You are a market research assistant."
+
+[agent.limits]
+monthly_budget_eur = 200.0
+idle_timeout = "10m"
+max_concurrent_runs = 1
+
+[agent.access]
+visibility = "private"
+allowed_roles = ["owner"]
+
+[[agent.mcp]]
+name = "market-data-api"
+transport = "http"
+url = "https://api.marketdata.example.eu/v1"
+
+[[agent.mcp]]
+name = "local-memory"
+transport = "stdio"
+image = "ghcr.io/example-founder/memory:latest"
+
+[[agent.triggers]]
+type = "manual"

@@ -1,0 +1,20 @@
+{
+  "_comment": "TEST-ONLY E1 summary pin; real decision writer coverage awaits F4e-4.",
+  "expected_content_hash": "eef9ee528ff3680480b19d9adc21fb9f03fa7d981db1242877bad56be2a9972d",
+  "pubkey_hex": "197f6b23e16c8532c6abc838facd5ea789be0c76b2920334039bfa8b3d368d61",
+  "receipt": {
+    "content_hash": "eef9ee528ff3680480b19d9adc21fb9f03fa7d981db1242877bad56be2a9972d",
+    "credits_spent": 0,
+    "format": "reede-v1",
+    "payload_summary": "{\"version\":1,\"kind\":\"hitl-decision\",\"run_id\":\"00000000-0000-0000-0000-0000000000f4\",\"approval_key\":\"release-output\",\"gate_type\":\"human-approval\",\"decision\":\"approved\",\"decider_sha256\":\"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\",\"decided_at\":\"2026-01-02T03:04:05Z\",\"context_sha256\":\"abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd\",\"signer\":\"b600306cfa76723f\"}",
+    "prev_hash": null,
+    "reservation_credits": 0,
+    "sequence_no": 1,
+    "signature": "23e0d50fea39c790e5e01a5fadb5513b2eedff5821cb03c6050bf1aaa510a5b874aabf9cbd911a792b5b4c27178bd1e9e92a41fa5991f3549bc401d3cc10c40b",
+    "task_id": "00000000-0000-0000-0000-0000000000d1",
+    "tenant_id": "vector-tenant",
+    "timestamp": "2026-01-02T03:04:05Z",
+    "tokens_used": 0,
+    "tsa_token": null
+  }
+}

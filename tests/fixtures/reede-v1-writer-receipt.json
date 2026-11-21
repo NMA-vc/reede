@@ -1,0 +1,20 @@
+{
+  "_comment": "Emitted by the receipt writer using entirely synthetic inputs, signed with the public test seed (32 bytes of 0x2a).",
+  "expected_content_hash": "b221f5b61512c633cbc84274d17dae3248c2043529c86f2727ad8c073e8f5a09",
+  "pubkey_hex": "197f6b23e16c8532c6abc838facd5ea789be0c76b2920334039bfa8b3d368d61",
+  "receipt": {
+    "content_hash": "b221f5b61512c633cbc84274d17dae3248c2043529c86f2727ad8c073e8f5a09",
+    "credits_spent": 0,
+    "format": "reede-v1",
+    "payload_summary": "{\"version\":2,\"agent_id\":\"example-agent\",\"terminal_status\":\"complete\",\"final_value_sha256\":\"e72f049fd0f5bfcbc7061a3da9b12efbb69506f32fd6e649ad31f9b149fd5a0c\"}",
+    "prev_hash": null,
+    "reservation_credits": 0,
+    "sequence_no": 1,
+    "signature": "d26d5db40379b177d3d41d6b64172f821b6c39fb9e402ffe54f4a6a56231d7f7177b0c38467f9b874d6ac0ec687005272fc5abb6e33354939e8c552e1b7ce206",
+    "task_id": "7a1e2c3d-0000-4000-8000-000000000042",
+    "tenant_id": "synthetic-reede-public-fixture-v1",
+    "timestamp": "2026-10-07T20:02:42.637758595Z",
+    "tokens_used": 0,
+    "tsa_token": null
+  }
+}

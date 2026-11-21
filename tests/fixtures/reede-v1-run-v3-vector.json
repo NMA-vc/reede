@@ -1,0 +1,21 @@
+{
+  "_comment": "Real host-finalizer fixture pin; only the unhashed outer timestamp is normalized.",
+  "expected_content_hash": "79410d104aa533acc85f4a39f2cd4f78e4e7121042d14626292663987cb7cd69",
+  "pubkey_hex": "197f6b23e16c8532c6abc838facd5ea789be0c76b2920334039bfa8b3d368d61",
+  "receipt": {
+    "content_hash": "79410d104aa533acc85f4a39f2cd4f78e4e7121042d14626292663987cb7cd69",
+    "credits_spent": 0,
+    "format": "reede-v1",
+    "payload_summary": "{\"version\":3,\"agent_id\":\"host-agent\",\"agent_version\":\"1.0.0\",\"spec_digest\":\"sha256:abababababababababababababababababababababababababababababababab\",\"terminal_status\":\"complete\",\"stop_reason\":\"completed\",\"final_value_sha256\":\"4c6b51be8b271aa3f95706b840c99ae02c1e315c5a087fc423f9876a1b7cc262\",\"reservation\":{\"id\":\"00000000-0000-0000-0000-0000000000f4\",\"reserved\":100,\"settled\":40,\"unit\":\"metering-credit\"},\"lease_ids\":[\"00000000-0000-0000-0000-00000000000a\",\"00000000-0000-0000-0000-00000000000b\"],\"signer\":\"b600306cfa76723f\",\"step_chain_head\":null}",
+    "prev_hash": null,
+    "reservation_credits": 0,
+    "sequence_no": 1,
+    "signature": "984f2cba044920a93e5637ec513248f3cfbf823b1da6c4e64a35c79a249bc8cf9b0751f49af5f65c573f450f1fc0853315b88772581938645c59f72bbfa11508",
+    "subject_id": "vector-subject",
+    "task_id": "00000000-0000-0000-0000-0000000000f4",
+    "tenant_id": "vector-tenant",
+    "timestamp": "2026-01-02T03:04:05Z",
+    "tokens_used": 0,
+    "tsa_token": null
+  }
+}

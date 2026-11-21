@@ -1,0 +1,19 @@
+{
+  "_comment": "Synthetic historic outer reede-v1 receipt using the pre-v2 terminal payload_summary, signed with the public test seed (32 bytes of 0x2a). Retained solely to pin read-only verification; it must never authorize automatic crash-gap terminal reconstruction.",
+  "pubkey_hex": "197f6b23e16c8532c6abc838facd5ea789be0c76b2920334039bfa8b3d368d61",
+  "receipt": {
+    "content_hash": "ec94ddb3a3a786bc54dbeba7588da0b0fc2211f1416b55f6c3c6221bbf8e7a84",
+    "credits_spent": 0,
+    "format": "reede-v1",
+    "payload_summary": "complete:sha256:e72f049fd0f5bfcbc7061a3da9b12efbb69506f32fd6e649ad31f9b149fd5a0c",
+    "prev_hash": null,
+    "reservation_credits": 0,
+    "sequence_no": 1,
+    "signature": "5f9115f2f79abe10f7683387c1f715c572ffe80a7fe4e5d58771f5237e9150a74d8034abb7c1a3f4b8e3a3d1260322cc3cc952d336c7369acd91c28fc461e907",
+    "task_id": "7a1e2c3d-0000-4000-8000-000000000042",
+    "tenant_id": "synthetic-reede-legacy-fixture-v1",
+    "timestamp": "2026-09-06T12:00:00Z",
+    "tokens_used": 0,
+    "tsa_token": null
+  }
+}

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reede-client"
+version = "0.8.0"
+description = "Authenticated Reede service clients and offline receipt verification"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+classifiers = ["Typing :: Typed", "Programming Language :: Python :: 3"]
+
+[tool.setuptools.package-data]
+reede_client = ["py.typed"]

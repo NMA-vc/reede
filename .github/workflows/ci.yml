@@ -1,0 +1,90 @@
+name: Reede standalone CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  CARGO_INCREMENTAL: "0"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  reede:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: ["1.89.0", "stable"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Rust toolchain (rustup is preinstalled on hosted runners)
+        run: |
+          rustup toolchain install "${{ matrix.toolchain }}" --profile minimal --component rustfmt --component clippy
+          rustup default "${{ matrix.toolchain }}"
+
+      - name: Require the reviewed standalone lockfile
+        run: |
+          test -f Cargo.lock
+          git ls-files --error-unmatch Cargo.lock >/dev/null
+
+      - name: Boundary checker tests (no Cargo invocation)
+        run: python3 -m unittest discover -s scripts/tests -v
+
+      - name: One-way dependency graph (default and all features)
+        run: python3 scripts/check-one-way-dependency.py
+
+      - name: Package check (cargo publish --dry-run, no token)
+        run: cargo publish --dry-run --locked
+
+      - name: Format
+        run: cargo fmt --package reede -- --check
+
+      - name: Clippy (all targets and features)
+        run: cargo clippy --package reede --locked --all-targets --all-features -- -D warnings
+
+      - name: Default-feature tests
+        run: cargo test --package reede --locked
+
+      - name: All-feature tests (including lifecycle CLI)
+        run: cargo test --package reede --locked --all-features
+
+      - name: Four examples
+        run: |
+          for example in manifest leash receipt verify; do
+            echo "::group::example $example"
+            cargo run --quiet --package reede --locked --example "$example"
+            echo "::endgroup::"
+          done
+
+      - name: Offline verifier accepts genuine and rejects tampered receipts
+        run: |
+          out="$(mktemp -d "${RUNNER_TEMP}/reede-verifier.XXXXXX")"
+          trap 'rm -rf "$out"' EXIT
+          cargo run --quiet --package reede --locked --example receipt -- "$out"
+          pubkey="$(cat "$out/pubkey.hex")"
+          report="$(cargo run --quiet --package reede --locked --bin verify -- \
+            --chain "$out/chain.json" --pubkey "$pubkey")"
+          echo "$report"
+          grep -Fq 'SIGNATURES: VERIFIED (ed25519, 3 links)' <<<"$report"
+          grep -Fq 'VERDICT:    SIGNED, NOT TIMESTAMPED' <<<"$report"
+          cargo run --quiet --package reede --locked --example verify -- \
+            --chain "$out/chain.json" --pubkey "$pubkey"
+          jq '.[1].credits_spent = 0' "$out/chain.json" > "$out/tampered.json"
+          if cargo run --quiet --package reede --locked --bin verify -- \
+            --chain "$out/tampered.json" --pubkey "$pubkey"; then
+            echo '::error::Verifier accepted a tampered receipt chain'
+            exit 1
+          fi

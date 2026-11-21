@@ -1,0 +1,2 @@
+# Preserve exact upstream bytes; audit-rustsec.py verifies the pinned Git blobs.
+* -whitespace

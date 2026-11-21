@@ -1,0 +1,20 @@
+{
+  "_comment": "TEST-ONLY synthetic summary pin, signed with the public test seed (32 bytes of 0x2a).",
+  "expected_content_hash": "fccbc0d6855a920fdb926fe4e40734f38c34f02ed6c0c299fca5f402632be8f6",
+  "pubkey_hex": "197f6b23e16c8532c6abc838facd5ea789be0c76b2920334039bfa8b3d368d61",
+  "receipt": {
+    "content_hash": "fccbc0d6855a920fdb926fe4e40734f38c34f02ed6c0c299fca5f402632be8f6",
+    "credits_spent": 0,
+    "format": "reede-v1",
+    "payload_summary": "{\"version\":1,\"kind\":\"qc\",\"run_id\":\"00000000-0000-0000-0000-0000000000f4\",\"input_hash\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"output_hashes\":[\"sha256:2222222222222222222222222222222222222222222222222222222222222222\",\"sha256:3333333333333333333333333333333333333333333333333333333333333333\"],\"verdict\":\"passed\",\"signer\":\"b600306cfa76723f\"}",
+    "prev_hash": null,
+    "reservation_credits": 0,
+    "sequence_no": 1,
+    "signature": "b07f11b2fe18022f08f30373b36edb5b3109d444c4987285204f20c2e587c22ab6d1a382b5019df80021f597a883901b44a89c11e2dd7a1f97744f7d664a250d",
+    "task_id": "00000000-0000-0000-0000-0000000000c1",
+    "tenant_id": "vector-tenant",
+    "timestamp": "2026-01-02T03:04:05Z",
+    "tokens_used": 0,
+    "tsa_token": null
+  }
+}

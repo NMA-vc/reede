@@ -1,0 +1,20 @@
+{
+  "_comment": "Shared reede-v1 receipt test vector (O5). A third-party verifier reimplemented from docs/reede/receipt-encoding-spec-addendum-reede-v1-wire.md MUST reproduce expected_content_hash and MUST verify the signature with pubkey_hex.",
+  "expected_content_hash": "b718a347ef7b58725942a2b10c3363767112dac42d93fbef655c66a85efadc83",
+  "pubkey_hex": "ea4a6c63e29c520abef5507b132ec5f9954776aebebe7b92421eea691446d22c",
+  "receipt": {
+    "content_hash": "b718a347ef7b58725942a2b10c3363767112dac42d93fbef655c66a85efadc83",
+    "credits_spent": 250,
+    "format": "reede-v1",
+    "payload_summary": "battlecard:acme",
+    "prev_hash": null,
+    "reservation_credits": 500,
+    "sequence_no": 1,
+    "signature": "f5976478c6ecd23a52adf62ab4e9dc15df69b49a7a1a8eb92caa236445afd397a388d4d25a6cb92f20587bed9ce155a49a7565abcc59e96617e17139b7e3d80d",
+    "task_id": "11111111-2222-3333-4444-555555555555",
+    "tenant_id": "tenant-shared-vector",
+    "timestamp": "2023-11-14T22:13:20Z",
+    "tokens_used": 1234,
+    "tsa_token": null
+  }
+}
