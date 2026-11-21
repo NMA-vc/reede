@@ -95,11 +95,8 @@ fn main() {
     println!("\nRejected manifests:");
     let bad: [(&str, String); 3] = [
         (
-            "non-EU model provider",
-            MANIFEST.replace(
-                r#"provider = "cortecs""#,
-                r#"provider = "some-us-provider""#,
-            ),
+            "empty model provider",
+            MANIFEST.replace(r#"provider = "cortecs""#, r#"provider = """#),
         ),
         (
             "zero budget ceiling",

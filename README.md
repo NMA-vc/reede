@@ -88,7 +88,7 @@ as smoke tests. Signing keys in the examples are generated in-process and never 
 
 | Example | Shows |
 |---|---|
-| `manifest` | `parse_manifest_v1` accepting a manifest and refusing a non-EU model provider, a zero budget and an unknown key; `derive_policy` producing the budget, approval threshold, egress allowlist and grants |
+| `manifest` | `parse_manifest_v1` accepting a manifest and refusing an empty model provider, a zero budget and an unknown key; `derive_policy` producing the budget, approval threshold, egress allowlist and grants |
 | `leash` | `AllowlistEgress`, `grant_permits`, `InMemoryLedger`, `TokenBudget` and `InMemoryLeaseManager`, each in both directions |
 | `receipt` | three runs that reserve and settle credits and emit one receipt each; writes `chain.json` and `pubkey.hex` |
 | `verify` | `verify_chain` and `verify_receipt_two_tier` on the genuine chain, then on copies with an edited field, an edited summary, a recomputed hash, the wrong key and a dropped receipt |
